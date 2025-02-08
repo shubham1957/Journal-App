@@ -27,6 +27,7 @@ public class User {
 
     @DBRef
     private List<Journal> journals;
+    private List<String> roles;
 
     public void setJournals(List<Journal> journals) {
         this.journals = new ArrayList<>();

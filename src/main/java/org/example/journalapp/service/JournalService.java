@@ -5,7 +5,6 @@ import org.bson.types.ObjectId;
 import org.example.journalapp.entity.Journal;
 import org.example.journalapp.entity.User;
 import org.example.journalapp.repository.JournalRepository;
-import org.example.journalapp.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,14 +17,12 @@ public class JournalService {
 
     private final JournalRepository journalRepository;
     private final UserService userService;
-    private final UserRepository userRepository;
 
     @Transactional
     public Journal createJournal(Journal newJournal, String userName){
         User newJournalUser = userService.findByUserName(userName);
         Journal savedJournal = journalRepository.save(newJournal);
         newJournalUser.getJournals().add(savedJournal);
-        //newJournalUser.setUserName(null);
         userService.saveUser(newJournalUser);
         return savedJournal;
     }

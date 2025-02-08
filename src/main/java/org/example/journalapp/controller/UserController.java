@@ -13,18 +13,20 @@ import java.util.List;
 @RequestMapping("/api/v1/user")
 @RequiredArgsConstructor
 public class UserController {
-
     private final UserService userService;
 
-    @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User newUser){
-        return new ResponseEntity<>(userService.createUser(newUser), HttpStatus.CREATED);
-    }
-
     @GetMapping
-    public ResponseEntity<List<User>> getAllUser(){
+    public ResponseEntity<List<User>> getAllUsers(){
         return new ResponseEntity<>(userService.getAllUser(),HttpStatus.OK);
     }
 
+    @PutMapping
+    public ResponseEntity<User> updateUser(@RequestBody User updateUserRequestBody){
+        return new ResponseEntity<>(userService.updateUser(updateUserRequestBody),HttpStatus.ACCEPTED);
+    }
 
+    @DeleteMapping
+    public ResponseEntity<Boolean> deleteUser() throws Exception {
+        return new ResponseEntity<>(userService.deleteUser(),HttpStatus.OK);
+    }
 }
