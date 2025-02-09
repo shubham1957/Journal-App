@@ -54,7 +54,13 @@ public class UserService {
         return userRepository.findByUserName(userName);
     }
 
-    public void saveUser(User user){
-        userRepository.save(user);
+    public User saveUser(User newUser){
+        return userRepository.save(newUser);
+    }
+
+    public User saveAdmin(User admin){
+        admin.setPassword(passwordEncoder.encode(admin.getPassword()));
+        admin.setRoles(List.of("USER", "ADMIN"));
+        return userRepository.save(admin);
     }
 }

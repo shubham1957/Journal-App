@@ -5,6 +5,7 @@ import org.bson.types.ObjectId;
 import org.example.journalapp.entity.Journal;
 import org.example.journalapp.entity.User;
 import org.example.journalapp.repository.JournalRepository;
+import org.example.journalapp.repository.UserRepository;
 import org.example.journalapp.security.AuthenticatedUserProvider;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
