@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/journal")
@@ -17,25 +18,31 @@ public class JournalController {
 
     private final JournalService journalService;
 
-    @PostMapping("/{userName}")
-    public ResponseEntity<Journal> createJournal(@RequestBody Journal newJournal, @PathVariable String userName ){
-        return new ResponseEntity<>(journalService.createJournal(newJournal, userName), HttpStatus.CREATED);
+    @PostMapping
+    public ResponseEntity<Journal> createJournal(@RequestBody Journal newJournal){
+        return new ResponseEntity<>(journalService.createJournal(newJournal), HttpStatus.CREATED);
     }
 
     @GetMapping
     public ResponseEntity<List<Journal>> getAllJournal(){
         return new ResponseEntity<>(journalService.getAllJournals(),HttpStatus.OK);
     }
+    
+    @GetMapping("{id}")
+    public ResponseEntity<Optional<Journal>> findJournalById(@PathVariable ObjectId id){
+        return new ResponseEntity<>(journalService.findJournal(id),HttpStatus.FOUND);
+    }
 
     @PutMapping("{id}")
-    public ResponseEntity<Journal> updateJournal(@PathVariable ObjectId id,@RequestBody Journal journal){
-        return new ResponseEntity<>(journalService.updateJournal(id,journal),HttpStatus.CREATED);
+    public ResponseEntity<Journal> updateJournal(@PathVariable ObjectId id,@RequestBody Journal updateJournalRequest){
+        return new ResponseEntity<>(journalService.updateJournal(id,updateJournalRequest),HttpStatus.CREATED);
     }
 
-    @DeleteMapping("{id}/{userName}")
-    public ResponseEntity<String> deleteJournal(@PathVariable ObjectId id,@PathVariable String userName){
-        return new ResponseEntity<>(journalService.deleteJournal(id, userName),HttpStatus.OK);
+    @DeleteMapping("{id}")
+    public ResponseEntity<String> deleteJournal(@PathVariable ObjectId id){
+        return new ResponseEntity<>(journalService.deleteJournal(id),HttpStatus.OK);
     }
+
 
 
 }

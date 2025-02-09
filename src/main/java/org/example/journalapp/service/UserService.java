@@ -3,6 +3,7 @@ package org.example.journalapp.service;
 import lombok.RequiredArgsConstructor;
 import org.example.journalapp.entity.User;
 import org.example.journalapp.repository.UserRepository;
+import org.example.journalapp.security.AuthenticatedUserProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,6 +18,7 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final AuthenticatedUserProvider authenticatedUserProvider;
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public User createUser(User newUser){
@@ -26,9 +28,7 @@ public class UserService {
     }
 
     public User updateUser(User updateUserRequestBody){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String userName = authentication.getName();
-        User existingUser = userRepository.findByUserName(userName);
+        User existingUser = authenticatedUserProvider.getAuthenticatedUser();
         if(existingUser!=null){
             existingUser.setUserName(updateUserRequestBody.getUserName());
             existingUser.setPassword(passwordEncoder.encode(updateUserRequestBody.getPassword()));

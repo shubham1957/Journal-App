@@ -20,6 +20,11 @@ public class UserController {
         return new ResponseEntity<>(userService.getAllUser(),HttpStatus.OK);
     }
 
+    @GetMapping("{userName}")
+    public ResponseEntity<User> getUserByUserName(@PathVariable String userName){
+        return new ResponseEntity<>(userService.findByUserName(userName),HttpStatus.FOUND);
+    }
+
     @PutMapping
     public ResponseEntity<User> updateUser(@RequestBody User updateUserRequestBody){
         return new ResponseEntity<>(userService.updateUser(updateUserRequestBody),HttpStatus.ACCEPTED);
