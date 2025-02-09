@@ -29,10 +29,6 @@ public class User {
     private List<Journal> journals;
     private List<String> roles;
 
-    public void setJournals(List<Journal> journals) {
-        this.journals = new ArrayList<>();
-    }
-
     public List<Journal> getJournals() {
         if (journals == null) {
             journals = new ArrayList<>();

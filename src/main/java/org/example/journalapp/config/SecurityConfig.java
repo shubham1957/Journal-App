@@ -1,4 +1,4 @@
-package org.example.journalapp.Config;
+package org.example.journalapp.config;
 
 import lombok.RequiredArgsConstructor;
 import org.example.journalapp.service.UserDetailServiceImpl;
