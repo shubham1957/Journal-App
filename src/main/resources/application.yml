@@ -4,9 +4,13 @@ spring:
 
   data:
     mongodb:
-      uri: mongodb+srv://root:macatlas@cluster0.pq557.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
-      database: journaldb
+      uri: mongodb+srv://${DB_USERNAME}:${DB_PASSWORD}@cluster0.pq557.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+      database: ${DB_NAME}
 
 
 server:
-  port: 1111
+  port: ${PORT}
+
+springdoc:
+  swagger-ui:
+    enabled: true

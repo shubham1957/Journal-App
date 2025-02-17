@@ -42,7 +42,4 @@ public class JournalController {
     public ResponseEntity<String> deleteJournal(@PathVariable ObjectId id){
         return new ResponseEntity<>(journalService.deleteJournal(id),HttpStatus.OK);
     }
-
-
-
 }
