@@ -4,7 +4,7 @@ spring:
 
   data:
     mongodb:
-      uri: mongodb+srv://root:macatlas@cluster0.pq557.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+      uri: mongodb+srv://root:${DB_PASSWORD}@cluster0.pq557.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
       database: journaldb
 
 
