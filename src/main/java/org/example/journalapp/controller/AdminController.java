@@ -1,6 +1,8 @@
 package org.example.journalapp.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.example.journalapp.dto.CreateUserRequestDto;
+import org.example.journalapp.dto.CreateUserResponseDto;
 import org.example.journalapp.entity.User;
 import org.example.journalapp.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -22,7 +24,7 @@ public class AdminController {
     }
 
     @PostMapping("/create-admin")
-    public ResponseEntity<User> createAdmin(@RequestBody User admin){
-        return new ResponseEntity<>(userService.saveAdmin(admin),HttpStatus.CREATED);
+    public ResponseEntity<CreateUserResponseDto> createAdmin(@RequestBody CreateUserRequestDto createAdminRequest){
+        return new ResponseEntity<>(userService.saveAdmin(createAdminRequest),HttpStatus.CREATED);
     }
 }

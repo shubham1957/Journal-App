@@ -1,12 +1,15 @@
 package org.example.journalapp.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.example.journalapp.dto.UpdateUserRequestDto;
+import org.example.journalapp.dto.UpdateUserResponseDto;
 import org.example.journalapp.entity.User;
 import org.example.journalapp.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @RestController
@@ -27,12 +30,12 @@ public class UserController {
     }
 
     @PutMapping
-    public ResponseEntity<User> updateUser(@RequestBody User updateUserRequestBody){
-        return new ResponseEntity<>(userService.updateUser(updateUserRequestBody),HttpStatus.ACCEPTED);
+    public ResponseEntity<UpdateUserResponseDto> updateUser(@RequestBody UpdateUserRequestDto updateUserRequestDto){
+        return new ResponseEntity<>(userService.updateUser(updateUserRequestDto),HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping
-    public ResponseEntity<Boolean> deleteUser() throws Exception {
+    public ResponseEntity<Boolean> deleteUser() throws AccessDeniedException {
         return new ResponseEntity<>(userService.deleteUser(),HttpStatus.OK);
     }
 }
