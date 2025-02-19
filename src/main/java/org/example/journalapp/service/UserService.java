@@ -1,6 +1,10 @@
 package org.example.journalapp.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.journalapp.dto.CreateUserRequestDto;
+import org.example.journalapp.dto.CreateUserResponseDto;
+import org.example.journalapp.dto.UpdateUserRequestDto;
+import org.example.journalapp.dto.UpdateUserResponseDto;
 import org.example.journalapp.entity.User;
 import org.example.journalapp.repository.UserRepository;
 import org.example.journalapp.security.AuthenticatedUserProvider;
@@ -21,20 +25,42 @@ public class UserService {
     private final AuthenticatedUserProvider authenticatedUserProvider;
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public User createUser(User newUser){
-        newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
-        newUser.setRoles(List.of("USER"));
-        return userRepository.save(newUser);
+    public CreateUserResponseDto createUser(CreateUserRequestDto createUserRequestDto){
+
+        User user = User.builder()
+                .userName(createUserRequestDto.getUserName())
+                .password(passwordEncoder.encode(createUserRequestDto.getPassword()))
+                .roles(List.of("USER"))
+                .build();
+
+        User newUser = userRepository.save(user);
+
+        return CreateUserResponseDto.builder()
+                .id(newUser.getId())
+                .userName(newUser.getUserName())
+                .password(newUser.getPassword())
+                .journals(newUser.getJournals())
+                .roles(newUser.getRoles())
+                .build();
     }
 
-    public User updateUser(User updateUserRequestBody){
-        User existingUser = authenticatedUserProvider.getAuthenticatedUser();
-        if(existingUser!=null){
-            existingUser.setUserName(updateUserRequestBody.getUserName());
-            existingUser.setPassword(passwordEncoder.encode(updateUserRequestBody.getPassword()));
-            userRepository.save(existingUser);
+    public UpdateUserResponseDto updateUser(UpdateUserRequestDto updateUserRequestDto){
+        User existingUser = authenticatedUserProvider.getAuthenticatedUser(); // Always authenticated
+
+        if (updateUserRequestDto.getUserName() != null && !updateUserRequestDto.getUserName().isBlank()) {
+            existingUser.setUserName(updateUserRequestDto.getUserName());
         }
-        return existingUser;
+
+        if (updateUserRequestDto.getPassword() != null && !updateUserRequestDto.getPassword().isBlank()) {
+            existingUser.setPassword(passwordEncoder.encode(updateUserRequestDto.getPassword()));
+        }
+
+        userRepository.save(existingUser);
+
+        return UpdateUserResponseDto.builder()
+                .userName(existingUser.getUserName())
+                .password(existingUser.getPassword())
+                .build();
     }
 
     public Boolean deleteUser() throws AccessDeniedException{
@@ -54,13 +80,24 @@ public class UserService {
         return userRepository.findByUserName(userName);
     }
 
-    public User saveUser(User newUser){
-        return userRepository.save(newUser);
+    public void saveUser(User newUser){
+        userRepository.save(newUser);
     }
 
-    public User saveAdmin(User admin){
-        admin.setPassword(passwordEncoder.encode(admin.getPassword()));
-        admin.setRoles(List.of("USER", "ADMIN"));
-        return userRepository.save(admin);
+    public CreateUserResponseDto saveAdmin(CreateUserRequestDto createAdminRequestDto){
+        User user = User.builder()
+                .userName(createAdminRequestDto.getUserName())
+                .password(passwordEncoder.encode(createAdminRequestDto.getPassword()))
+                .roles(List.of("USER", "ADMIN"))
+                .build();
+
+        User newAdmin = userRepository.save(user);
+
+        return CreateUserResponseDto.builder()
+                .id(newAdmin.getId())
+                .userName(newAdmin.getUserName())
+                .password(newAdmin.getPassword())
+                .build();
+
     }
 }

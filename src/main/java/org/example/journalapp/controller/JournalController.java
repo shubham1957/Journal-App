@@ -2,12 +2,17 @@ package org.example.journalapp.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
+import org.example.journalapp.dto.CreateJournalRequestDto;
+import org.example.journalapp.dto.CreateJournalResponseDto;
+import org.example.journalapp.dto.UpdateJournalRequestDto;
+import org.example.journalapp.dto.UpdateJournalResponseDto;
 import org.example.journalapp.entity.Journal;
 import org.example.journalapp.service.JournalService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,8 +24,8 @@ public class JournalController {
     private final JournalService journalService;
 
     @PostMapping
-    public ResponseEntity<Journal> createJournal(@RequestBody Journal newJournal){
-        return new ResponseEntity<>(journalService.createJournal(newJournal), HttpStatus.CREATED);
+    public ResponseEntity<CreateJournalResponseDto> createJournal(@RequestBody CreateJournalRequestDto createJournalRequestDto){
+        return new ResponseEntity<>(journalService.createJournal(createJournalRequestDto), HttpStatus.CREATED);
     }
 
     @GetMapping
@@ -34,7 +39,7 @@ public class JournalController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Journal> updateJournal(@PathVariable ObjectId id,@RequestBody Journal updateJournalRequest){
+    public ResponseEntity<UpdateJournalResponseDto> updateJournal(@PathVariable ObjectId id, @RequestBody UpdateJournalRequestDto updateJournalRequest) throws AccessDeniedException {
         return new ResponseEntity<>(journalService.updateJournal(id,updateJournalRequest),HttpStatus.CREATED);
     }
 

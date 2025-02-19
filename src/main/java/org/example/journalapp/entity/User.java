@@ -1,5 +1,6 @@
 package org.example.journalapp.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import org.springframework.data.annotation.Id;
@@ -25,10 +26,11 @@ public class User {
     private String userName;
     private String password;
 
-    @DBRef
+    @DBRef(lazy = true)
     private List<Journal> journals;
     private List<String> roles;
 
+    @JsonIgnore
     public List<Journal> getJournals() {
         if (journals == null) {
             journals = new ArrayList<>();
