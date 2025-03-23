@@ -14,3 +14,5 @@ server:
 springdoc:
   swagger-ui:
     enabled: true
+
+SECRET_KEY: "TaK+HaV^uvCHEFsEVfypW#7g9^k*Z8$V"

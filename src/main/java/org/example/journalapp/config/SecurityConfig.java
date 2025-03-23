@@ -1,6 +1,7 @@
 package org.example.journalapp.config;
 
 import lombok.RequiredArgsConstructor;
+import org.example.journalapp.filter.JwtFilter;
 import org.example.journalapp.service.UserDetailServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +16,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -24,14 +26,14 @@ public class SecurityConfig {
     private final UserDetailServiceImpl userDetailService;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtFilter jwtFilter) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/api/v1/journal/**","/api/v1/users").authenticated()
+                        .requestMatchers("/api/v1/journals/**","/api/v1/users/**").authenticated()
                         .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
                         .anyRequest().permitAll())
-                .httpBasic(Customizer.withDefaults())
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
